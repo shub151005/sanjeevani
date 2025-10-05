@@ -1,4 +1,4 @@
- // --- ELEMENT SELECTORS ---
+// --- ELEMENT SELECTORS ---
 const languageSelector = document.getElementById('languageSelector');
 const pages = document.querySelectorAll('.page');
 const navCards = document.querySelectorAll('.nav-card');
@@ -7,6 +7,23 @@ const aiChatWindow = document.getElementById('aiChatWindow');
 const aiChatInput = document.getElementById('aiChatInput');
 const aiChatSendBtn = document.getElementById('aiChatSendBtn');
 const faqContainer = document.getElementById('faqContainer');
+const aiChatPage = document.getElementById('aiChatPage'); // Selector for AI Chat Page
+
+
+// --- DYNAMIC ELEMENT INJECTION ---
+// Create and add a header with a back button to the AI Chat page
+const chatHeader = document.createElement('div');
+chatHeader.className = 'page-header';
+chatHeader.innerHTML = `
+    <button class="back-to-home" data-page="home">&larr;</button>
+    <div>
+        <h2 class="page-title" data-key="navChatTitle">AI Chat</h2>
+        <p class="page-subtitle" data-key="aiChatWelcome">Ask me about symptoms...</p>
+    </div>`;
+// Add a specific event listener for this dynamically created button
+chatHeader.querySelector('.back-to-home').addEventListener('click', () => showPage('homePage'));
+// Add the new header to the top of the AI Chat page
+aiChatPage.prepend(chatHeader);
 
 
 // --- STATE MANAGEMENT ---
@@ -71,7 +88,7 @@ navCards.forEach(card => {
     });
 });
 
-// Add click listeners to all "back to home" buttons
+// Add click listeners to all "back to home" buttons that exist on initial load
 document.querySelectorAll('.back-to-home').forEach(button => {
     button.addEventListener('click', () => showPage('homePage'));
 });
@@ -179,7 +196,7 @@ const translations = {
         searchBtn: "অনুসন্ধান কৰক",
         consultationSuccess: "ধন্যবাদ! আপোনাৰ অনুৰোধ পঞ্জীয়ন কৰা হৈছে। এজন স্বাস্থ্য স্বেচ্ছাসেৱকে আপোনাক ২৪ ঘণ্টাৰ ভিতৰত ফোন কৰিব। হোমলৈ ঘূৰি যোৱা হৈছে...",
         fever: "জ্বৰ", coughCold: "কাহ আৰু চৰ্দি", stomachPain: "পেটৰ বিষ", injury: "সৰু আঘাত", headache: "মূৰৰ বিষ", diarrhea: "ডায়েৰিয়া / বমি",
-        feverAdvice: "<strong>জ্বৰৰ বাবে প্ৰাথমিক চিকিৎসা:</strong><br>১. শীতল ঠাইত জিৰণি লওক।<br>২. পানী আৰু অ’আৰএছৰ দৰে যথেষ্ট তৰল পদাৰ্থ খাওক।<br>৩. কপালত এটুকুৰা শীতল, তিতা কাপোৰ ৰাখক। যদি ৩ দিনৰ পিছতো জ্বৰ থাকে, চিকিৎসকৰ পৰামৰ্শ লওক।",
+        feverAdvice: "<strong>জ্বৰৰ বাবে প্ৰাথমিক চিকিৎসা:</strong><br>১. শীতল ঠাইত জিৰণি লওক।<br>২. পানী আৰু অ’আৰএছৰ দৰে যথেষ্ট তৰল পদাৰ্থ খাওক।<br>৩. কপালত এটুকুৰা শীতল, তিতা কাপোৰ ৰাখক। যদি ৩ দিনৰ পিছতো জ্বৰ থাকে, চিকিৎসকৰ পৰামৰশ লওক।",
         coughAdvice: "<strong>কাহ আৰু চৰ্দিৰ বাবে প্ৰাথমিক চিকিৎসা:</strong><br>১. গৰম নিমখীয়া পানীৰে গাৰ্গল কৰক।<br>২. চুপ বা চাহৰ দৰে গৰম তৰল পদাৰ্থ খাওক।<br>৩. গৰম পানীৰ বাটিৰ পৰা ভাপ লওক। যদি ৫ দিনৰ ভিতৰত ভাল নহয়, চিকিৎসকৰ পৰামৰ্শ লওক।",
         stomachPainAdvice: "<strong>পেটৰ বিষৰ বাবে প্ৰাথমিক চিকিৎসা:</strong><br>১. যথেষ্ট পানী খাওক, কিন্তু সৰু সৰু চুমুকত।<br>২. কেইঘণ্টামানৰ বাবে গোটা খাদ্য পৰিহাৰ কৰক।<br><strong>সাৱধান:</strong> যদি বিষ তীব্ৰ হয়, তেন্তে লগে লগে চিকিৎসকৰ সহায় লওক।",
         injuryAdvice: "<strong>সৰু কটাৰ বাবে প্ৰাথমিক চিকিৎসা:</strong><br>১. পৰিষ্কাৰ কাপোৰেৰে লাহেকৈ হেঁচা দিয়ক।<br>২. এন্টিচেপ্টিক তৰলৰে ঘাঁ চাফা কৰক।<br>৩. বেণ্ডেজ লগাওক।",
@@ -238,20 +255,37 @@ function addMessageToAIWindow(text, sender) {
 function getBotResponse(query) {
     const lowerQuery = query.toLowerCase();
     
+    // Check for fever
     if (lowerQuery.includes('fever') || lowerQuery.includes('बुखार') || lowerQuery.includes('জ্বৰ')) {
         return translations[currentLanguage].feverAdvice;
     }
+    // Check for headache
     if (lowerQuery.includes('headache') || lowerQuery.includes('सिरदर्द') || lowerQuery.includes('মূৰৰ বিষ')) {
         return translations[currentLanguage].headacheAdvice;
     }
-    if (lowerQuery.includes('cough') || lowerQuery.includes('खांसी') || lowerQuery.includes('কাহ')) {
+    // Check for cough or cold
+    if (lowerQuery.includes('cough') || lowerQuery.includes('cold') || lowerQuery.includes('खांसी') || lowerQuery.includes('जुकाम') || lowerQuery.includes('কাহ') || lowerQuery.includes('চৰ্দি')) {
         return translations[currentLanguage].coughAdvice;
     }
-     if (lowerQuery.includes('hospital') || lowerQuery.includes('अस्पताल')) {
+    // Check for stomach pain
+    if (lowerQuery.includes('stomach') || lowerQuery.includes('पेट') || lowerQuery.includes('পেটৰ')) {
+        return translations[currentLanguage].stomachPainAdvice;
+    }
+    // Check for diarrhea or vomiting
+    if (lowerQuery.includes('diarrhea') || lowerQuery.includes('vomit') || lowerQuery.includes('दस्त') || lowerQuery.includes('उल्टी') || lowerQuery.includes('ডায়েৰিয়া') || lowerQuery.includes('বমি')) {
+        return translations[currentLanguage].diarrheaAdvice;
+    }
+    // Check for minor injury
+    if (lowerQuery.includes('injury') || lowerQuery.includes('cut') || lowerQuery.includes('चोट') || lowerQuery.includes('আঘাত')) {
+        return translations[currentLanguage].injuryAdvice;
+    }
+    // Check for hospital search
+    if (lowerQuery.includes('hospital') || lowerQuery.includes('अस्पताल')) {
         showPage('findHospitalPage');
         return "You can find hospitals on this page. Please enter your district.";
     }
     
+    // Default response if no keyword is matched
     return translations[currentLanguage].unknownQuery;
 }
 
