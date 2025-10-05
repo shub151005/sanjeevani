@@ -1,0 +1,574 @@
+ :root {
+    --primary-color: #007BFF;
+    --secondary-color: #00C6FF;
+    --accent-green: #28a745;
+    --accent-red: #dc3545;
+    --background-color: #F8F9FA;
+    --card-bg-color: #FFFFFF;
+    --text-color: #343A40;
+    --light-text-color: #6c757d;
+    --border-color: #DEE2E6;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+
+    /* This sets your image as the background. The file name must be exact. */
+    background-image: 
+        /* This adds a semi-transparent white overlay on top of your image.
+         * It helps the main app container stand out and makes the background less distracting.
+         * The color rgba(248, 249, 250, 0.85) is based on your --background-color variable.
+         */
+        linear-gradient(rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.85)),
+        url('Healthcare AI Background Alag Aasman Inspired.jpg');
+
+    /* This makes the background image scale to cover the entire viewport without distortion. */
+    background-size: cover;
+
+    /* This centers the image within the viewport. */
+    background-position: center;
+
+    /* This prevents the image from tiling or repeating if it's smaller than the screen. */
+    background-repeat: no-repeat;
+    
+    /* This keeps the background image fixed in place, creating a nice parallax effect when you scroll. */
+    background-attachment: fixed;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 450px; /* Mobile first max-width */
+    height: 95vh;
+    max-height: 900px;
+    background-color: var(--card-bg-color);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: max-width 0.3s ease-in-out;
+}
+
+.app-header {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-placeholder svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.header-title .icon-placeholder {
+    width: 32px;
+    height: 32px;
+    color: var(--primary-color);
+}
+
+
+.header-title h1 {
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.2;
+}
+.header-title h1 span {
+    font-size: 0.8rem;
+    color: var(--light-text-color);
+    font-weight: 400;
+}
+
+.language-selector select {
+    background-color: #fff;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.main-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+.main-content::-webkit-scrollbar { width: 5px; }
+.main-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+
+/* Page Styles */
+.page {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+}
+.page.active {
+    display: flex;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.back-to-home {
+    background: #f1f3f5;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.page-subtitle {
+    font-size: 1rem;
+    color: var(--light-text-color);
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+
+/* Home Page specific */
+.emergency-banner {
+    background-color: #FFF3CD;
+    border: 1px solid #FFEEBA;
+    color: #856404;
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+.emergency-banner a {
+    color: var(--accent-red);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nav-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.nav-card {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.nav-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+}
+.nav-card .icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+}
+
+.nav-card .icon-placeholder {
+    width: 24px;
+    height: 24px;
+    color: #fff;
+}
+
+.nav-card h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+.nav-card p {
+    margin: 4px 0 0;
+    font-size: 0.8rem;
+    color: var(--light-text-color);
+}
+/* Card-specific colors */
+.nav-card[data-page="aiChat"] .icon-wrapper { background-color: var(--primary-color); }
+.nav-card[data-page="firstAid"] .icon-wrapper { background-color: var(--accent-red); }
+.nav-card[data-page="bookConsultation"] .icon-wrapper { background-color: var(--accent-green); }
+.nav-card[data-page="findHospital"] .icon-wrapper { background-color: #fd7e14; }
+
+/* Chat Interface Styles */
+.chat-interface-wrapper {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+.chat-window {
+    height: 250px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-right: 10px;
+}
+ .chat-window::-webkit-scrollbar { width: 5px; }
+.chat-window::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+.message {
+    display: flex;
+    max-width: 85%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    word-break: break-word;
+}
+.message.bot {
+    background-color: #E9ECEF;
+    color: var(--text-color);
+    align-self: flex-start;
+    border-top-left-radius: 4px;
+}
+.message.user {
+    background-color: var(--primary-color);
+    color: #fff;
+    align-self: flex-end;
+    border-top-right-radius: 4px;
+}
+
+/* AI Chat Page Specific */
+.chat-container-full {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.chat-window-full {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-top: 1px solid var(--border-color);
+}
+#aiChatInput {
+    flex-grow: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 1rem;
+}
+#aiChatSendBtn {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#aiChatSendBtn .icon-placeholder {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* First Aid Page specific */
+.back-btn {
+    background-color: var(--light-text-color);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* Find Hospital Page */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.search-bar input {
+    flex-grow: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1rem;
+}
+.search-bar button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+}
+.hospital-card {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 15px;
+}
+.hospital-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+}
+ .hospital-card p {
+    margin: 4px 0;
+    color: var(--light-text-color);
+    font-size: 0.9rem;
+}
+.hospital-actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+}
+.hospital-actions button {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.hospital-actions .directions-btn {
+    background-color: #fff;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+.hospital-actions .call-btn {
+    background-color: var(--primary-color);
+    border: none;
+    color: #fff;
+}
+
+/* Consultation Page */
+.book-consultation-layout {
+    display: flex;
+    flex-direction: column;
+}
+.consultation-form .form-group {
+    margin-bottom: 16px;
+}
+ .consultation-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+.consultation-form input, .consultation-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+.consultation-form .submit-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: var(--accent-green);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.info-sidebar {
+    background-color: #E9F7EC;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 24px;
+}
+.info-sidebar h4 {
+    margin: 0 0 10px;
+    color: var(--accent-green);
+}
+ .info-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    color: #196A2E;
+}
+.info-sidebar li {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.info-sidebar .icon-placeholder {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* FAQ Section */
+.faq-section {
+    padding-bottom: 20px;
+}
+.faq-item {
+    border-bottom: 1px solid var(--border-color);
+}
+.faq-item summary {
+    padding: 1rem 0;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none; /* Hide default marker */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.faq-item summary::-webkit-details-marker {
+    display: none; /* Hide default marker for Chrome */
+}
+.faq-item summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+}
+.faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+.faq-item p {
+    padding: 0 0 1rem 0;
+    margin: 0;
+    color: var(--light-text-color);
+    line-height: 1.6;
+}
+
+/* Footer Section */
+.app-footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+}
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.social-links a {
+    color: var(--light-text-color);
+    transition: color 0.2s;
+}
+.social-links a:hover {
+    color: var(--primary-color);
+}
+.social-links .icon-placeholder {
+    width: 24px;
+    height: 24px;
+}
+
+/* Laptop / Desktop Styles */
+@media (min-width: 1024px) {
+    .app-container {
+        max-width: 1024px;
+        height: 80vh;
+    }
+
+    .nav-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .chat-window {
+        height: 350px;
+    }
+
+    .book-consultation-layout {
+        flex-direction: row;
+        gap: 30px;
+    }
+    
+    .consultation-form {
+        flex: 2; /* Takes twice the space of sidebar */
+    }
+
+    .info-sidebar {
+        flex: 1;
+        margin-top: 0;
+    }
+}
+body {
+    /* This sets your image as the background. The file name must be exact. */
+    background-image: 
+        /* * This adds a semi-transparent white overlay on top of your image.
+         * It helps the main app container stand out and makes the background less distracting.
+         * The color rgba(248, 249, 250, 0.85) is based on your --background-color variable.
+         */
+        linear-gradient(rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.85)),
+        url('Healthcare AI Background Alag Aasman Inspired.jpg');
+
+    /* This makes the background image scale to cover the entire viewport without distortion. */
+    background-size: cover;
+
+    /* This centers the image within the viewport. */
+    background-position: center;
+
+    /* This prevents the image from tiling or repeating if it's smaller than the screen. */
+    background-repeat: no-repeat;
+    
+    /* This keeps the background image fixed in place, creating a nice parallax effect when you scroll. */
+    background-attachment: fixed;
+}
